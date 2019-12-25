@@ -17,9 +17,9 @@ class CreateZipcodesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             
-            $table->number('zipcode_begin');
-            $table->number('zipcode_end');
-            $table->number('name');
+            $table->bigInteger('zipcode_begin');
+            $table->bigInteger('zipcode_end');
+            $table->string('name');
             $table->string('active', 1);
 
             $table->unsignedBigInteger('store_id');

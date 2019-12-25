@@ -54,7 +54,6 @@ class AppServiceProvider extends ServiceProvider
             $group_icons = [];
             $programs = [];
             $icons = [];
-            $anterior = '';
 
             foreach ($menus as $menu) {
                 if ($menu->show_menu == 'S')
@@ -64,8 +63,8 @@ class AppServiceProvider extends ServiceProvider
                 $group_icons[$menu->grupo] = $menu->group_icon;
                 $programs[$menu->route] = $menu->programa;
                 $icons[$menu->route] = $menu->icon;
-                if (!$anterior) $anterior = $menu->grupo;
             }
+            #dd($program_groups);
             // Armazena memoria para depois validar cada mudança de programa
             $programs['home'] = 'home';
             $programs['perfil'] = 'perfil';
@@ -73,15 +72,19 @@ class AppServiceProvider extends ServiceProvider
             session(['icons' => $icons]);
 
             // Desenha menu
+            $anterior = '';
             $submenus = [];
             foreach ($program_groups as $programa => $grupo) {
-                if ($grupo != $anterior) {
+                if (empty($anterior)) 
                     $anterior = $grupo;
-                    $event->menu->add(simpleMenu($grupo, $group_icons[$grupo], $submenus));
+                if ($grupo != $anterior) {
+                    $event->menu->add(simpleMenu($anterior, $group_icons[$grupo], $submenus));
+                    $anterior = $grupo;
                     $submenus = [];
                 }
                 $submenus[] = simpleSubmenu($programa, $program_icons[$programa], $program_routes[$programa]);
             }
+            #dd($program_routes);
             #dd($submenus);
             if (!empty($submenus))
                 $event->menu->add(simpleMenu($grupo, $group_icons[$grupo], $submenus));
@@ -89,7 +92,7 @@ class AppServiceProvider extends ServiceProvider
             // Menu comum a todos usuários 
             $event->menu->add(
                 [
-                    'text' => 'CONFIGURAÇÔES', 'icon' => 'fas fa-fw fa-cog',
+                    'text' => 'PERFIL', 'icon' => 'fas fa-fw fa-cog',
                     'submenu' => [
                         ['text' => 'Perfil', 'url' => '/perfil', 'icon' => 'fas fa-fw fa-user']
                     ]
