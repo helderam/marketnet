@@ -6,7 +6,7 @@
 
 <!-- MOSTRA MENSAGEM E ERROS -->
 {!! simpleMessage($errors) !!}
-{!! simpleFormHead('Cadastro Grupos', $group->id) !!}
+{!! simpleFormHead($group->id) !!}
 
 
 <!-- FORMULARIO -->

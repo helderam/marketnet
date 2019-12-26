@@ -207,19 +207,21 @@ function simpleParameters($default_column, $order = 'desc')
       echo "SEM PERMISSÂO";
       dd('SEM PERMISSÂO'); // DESATIVAR AQUI PARA PERMITIR ACESSAR TODOS PROGRAMAS
     }
-
     // Limpeza sessão
+    session(['filters' => array()]);
+    session(['descriptions' => []]);
+    // Armazena Parametros 
     session(['controller' => $controller]);
     session(['column' => $default_column]);
     session(['order' => $order]);
-    session(['filters' => array()]);
-    session(['descriptions' => []]);
     session(['back' => session('route_back')]);
     session(['icon' => $icons[$program]]);
     session(['program' => $programs[$program]]);
     session(['selected_id' => session('id')]);
     session(['selected_name' => session('name')]);
+    #var_dump(session()->all()); exit;
   }
+
   $records = request('records', session('records', 5));
   $column = request('column', session('column')) ?? $default_column;
   session(['order' => session('order', 'desc')]);

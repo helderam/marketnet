@@ -62,4 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resources([
         'stores' => 'Config\StoreController',
     ]);
+
+    // Lojas
+    Route::resources([
+        'zipcodes' => 'Config\ZipcodeController',
+    ]);
 });

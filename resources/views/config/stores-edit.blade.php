@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Usuários')
+@section('title', 'Lojas')
 
 @section('content')
 
 <!-- MOSTRA MENSAGEM E ERROS -->
 {!! simpleMessage($errors) !!}
-{!! simpleFormHead('Cadastro Lojas', $store->id) !!}
+{!! simpleFormHead($store->id) !!}
 
 
 <!-- FORMULARIO -->
@@ -22,7 +22,7 @@
     <div class="col">
 
       <!-- ID -->
-      <div class="form-store row">
+      <div class="form-group row">
         {!! Form::label('id', 'ID:', ['class' => 'col-sm-3 col-form-label']) !!}
         <div class="col-sm-9">
           {!! Form::text('id', old('id', $store->id), ['placeholder' => 'ID', 'class' => 'form-control form-control-sm', 'readonly']) !!}
@@ -30,7 +30,7 @@
       </div>
 
       <!-- NOME -->
-      <div class="form-store row">
+      <div class="form-group row">
         {!! Form::label('name', 'Nome Loja:', ['class' => 'col-sm-3 col-form-label']) !!}
         <div class="col-sm-9">
           {!! Form::text('name', old('name', $store->name), ['placeholder' => 'Nome do storea', 'class' => 'form-control form-control-sm']) !!}
@@ -38,12 +38,12 @@
       </div>
 
       <!-- DESCRIÇÂO -->
-      <div class="form-store row">
+      <div class="form-group row">
         <div class="col-sm-3">
           <label for="description" class="col-form-label">Descrição</label>
         </div>
         <div class="col-sm-5">
-          <div class="input-store">
+          <div class="input-group">
             <textarea class="form-control form-control-sm" id="description" name="description" rows="3">{{ old('description', $store->description) }}</textarea>
           </div>
         </div>
@@ -55,12 +55,12 @@
     <div class="col">
 
       <!-- DATA DE CRIAÇÂO -->
-      <div class="form-store row">
+      <div class="form-group row">
         <div class="col-sm-3">
           <label for="created_at" class="col-form-label">Criado em</label>
         </div>
         <div class="col-sm-5">
-          <div class="input-store">
+          <div class="input-group">
             <i class="fa fa-calendar-alt fa-2x"></i>
             <input type="datetime-local" class="form-control form-control-sm" id="created_at" name="created_at" readonly value="{{ old('created_at', $store->created_at ? $store->created_at->format('Y-m-d\TH:i:s') : '') }}">
           </div>
@@ -68,12 +68,12 @@
       </div>
 
       <!-- DATA DE ALTERAÇÂO -->
-      <div class="form-store row">
+      <div class="form-group row">
         <div class="col-sm-3">
           <label for="updated_at" class="col-form-label">Alterado em</label>
         </div>
         <div class="col-sm-5">
-          <div class="input-store">
+          <div class="input-group">
             <i class="fa fa-calendar-alt fa-2x"></i>
             <input type="datetime-local" class="form-control form-control-sm" id="updated_at" name="updated_at" readonly value="{{ old('updated_at', $store->updated_at ? $store->updated_at->format('Y-m-d\TH:i:s') : '') }}">
           </div>

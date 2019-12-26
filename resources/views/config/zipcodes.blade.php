@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Grupos')
+@section('title', 'CEPs')
 
 @section('content')
 
@@ -9,9 +9,9 @@
 
 
 <!-- LINHA TITULO, PESQUISA/BUSCA E NOVO REGISTRO -->
-<form action="/stores" method="get">
+<form action="/zipcodes" method="get">
 
-  <?php echo simpleHeadTable(route('stores.create')); ?>
+  <?php echo simpleHeadTable(route('zipcodes.create')); ?>
 
   <!-- CAMPOS PARA FILTRAGEM -->
   <div class="collapse" id="filtros">
@@ -57,15 +57,14 @@
             </thead>
 
             <tbody>
-              @foreach($stores as $store)
+              @foreach($zipcodes as $zipcode)
               <tr>
-                <td>{{$store->id}}</td>
-                <td>{{$store->name}}</td>
-                <td>{{simpleDateFormat($store->created_at)}}</td>
+                <td>{{$zipcode->id}}</td>
+                <td>{{$zipcode->name}}</td>
+                <td>{{simpleDateFormat($zipcode->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>
-                  <?php echo simpleAction('EDITAR', 'stores.edit', 'info', 'fa-edit', $store->id); ?>
-                  <?php echo simpleAction('CEPs', 'stores.show', 'info', 'fa-map', $store->id); ?>
+                  <?php echo simpleAction('EDITAR', 'zipcodes.edit', 'info', 'fa-edit', $zipcode->id); ?>
                 </td>
               </tr>
               @endforeach
@@ -80,7 +79,7 @@
           </table>
 
           <!-- RODAPE NAVEGADOR DE PAGINAS -->
-          <?php echo simpleFootTable($stores) ?>
+          <?php echo simpleFootTable($zipcodes) ?>
           <!-- FIM - RODAPE -->
 
         </div>
