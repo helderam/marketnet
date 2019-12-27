@@ -19,12 +19,12 @@ class CreateProductsTable extends Migration
 
             $table->string('name');
             $table->string('description');
-            $table->text('body');
+            $table->text('body')->nullable();
             $table->string('slug');
             $table->string('sku')->unique();
             
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('supplier_id');
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }
 

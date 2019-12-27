@@ -72,4 +72,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resources([
         'categories' => 'Config\CategoryController',
     ]);
+
+    // Fornecedores
+    Route::resources([
+        'suppliers' => 'Config\SupplierController',
+    ]);
+
+    // Produtos
+    Route::resources([
+        'products' => 'Config\ProductController',
+    ]);
 });

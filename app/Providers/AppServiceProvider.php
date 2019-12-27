@@ -74,6 +74,7 @@ class AppServiceProvider extends ServiceProvider
             // Desenha menu
             $anterior = '';
             $submenus = [];
+            asort($program_groups);
             foreach ($program_groups as $programa => $grupo) {
                 if (empty($anterior)) 
                     $anterior = $grupo;

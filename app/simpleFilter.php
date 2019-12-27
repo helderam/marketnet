@@ -328,6 +328,27 @@ function simpleHeadTable($route_create_new = null)
 }
 
 
+
+/**
+ * Return selected qith options
+ *
+ * @param  integer $id
+ * @param  records $records
+ * 
+ * @return mixed
+ */
+function simpleSelect($selected_id, $records)
+{
+  $selects = "";
+  #dd($records);
+  foreach ($records as $option => $id) {
+    $selected = $selected_id == $id ? 'selected' : '';
+    $selects .= "<option value='$id' $selected> $option </option>";
+  }
+  #dd($selects);
+  return $selects;
+}
+
 /**
  * Return footer of table with pagination and number of records options
  *
