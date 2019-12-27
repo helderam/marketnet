@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'CEPs')
+@section('title', 'Categorias')
 
 @section('content')
 
@@ -9,9 +9,9 @@
 
 
 <!-- LINHA TITULO, PESQUISA/BUSCA E NOVO REGISTRO -->
-<form action="/zipcodes" method="get">
+<form action="/categories" method="get">
 
-  <?php echo simpleHeadTable(route('zipcodes.create')); ?>
+  <?php echo simpleHeadTable(route('categories.create')); ?>
 
   <!-- CAMPOS PARA FILTRAGEM -->
   <div class="collapse" id="filtros">
@@ -50,27 +50,26 @@
             <thead>
               <tr>
                 <th> <?php echo simpleColumn('id', 'ID') ?></th>
-                <th> <?php echo simpleColumn('name', 'NOME DA FAIXA') ?></th>
-                <th> <?php echo simpleColumn('zipcode_begin', 'CEP INICIO') ?></th>
-                <th> <?php echo simpleColumn('zipcode_end', 'CEP FINAL') ?></th>
-                <th> <?php echo simpleColumn('active', 'ATIVO?') ?></th>
+                <th> <?php echo simpleColumn('name', 'NOME') ?></th>
+                <th> <?php echo simpleColumn('level', 'NÌVEL') ?></th>
+                <th> <?php echo simpleColumn('slug', 'SLUG') ?></th>
                 <th> <?php echo simpleColumn('created_at', 'CRIAÇÂO') ?></th>
                 <th> AÇÔES </th>
               </tr>
             </thead>
 
             <tbody>
-              @foreach($zipcodes as $zipcode)
+              @foreach($categories as $category)
               <tr>
-                <td>{{$zipcode->id}}</td>
-                <td>{{$zipcode->name}}</td>
-                <td>{{$zipcode->zipcode_begin}}</td>
-                <td>{{$zipcode->zipcode_end}}</td>
-                <td>{{$zipcode->active}}</td>
-                <td>{{simpleDateFormat($zipcode->created_at)}}</td>
+                <td>{{$category->id}}</td>
+                <td>{{$category->name}}</td>
+                <td>{{$category->level}}</td>
+                <td>{{$category->slug}}</td>
+                <td>{{simpleDateFormat($category->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>
-                  <?php echo simpleAction('EDITAR', 'zipcodes.edit', 'info', 'fa-edit', $zipcode->id); ?>
+                  <?php echo simpleAction('EDITAR', 'categories.edit', 'info', 'fa-edit', $category->id); ?>
+                  <?php echo simpleAction('SUBCATEGORIAS', 'categories.show', 'info', 'fa-map', $category->id); ?>
                 </td>
               </tr>
               @endforeach
@@ -85,7 +84,7 @@
           </table>
 
           <!-- RODAPE NAVEGADOR DE PAGINAS -->
-          <?php echo simpleFootTable($zipcodes) ?>
+          <?php echo simpleFootTable($categories) ?>
           <!-- FIM - RODAPE -->
 
         </div>

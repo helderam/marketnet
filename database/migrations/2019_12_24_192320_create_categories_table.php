@@ -19,12 +19,12 @@ class CreateCategoriesTable extends Migration
 
             $table->integer('level');
             $table->string('name');
-            $table->string('description');
-            $table->text('body');
-            $table->string('slug');
+            $table->string('description')->nullable();
+            $table->text('body')->nullable();
+            $table->string('slug')->nullable();
 
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            #$table->foreign('category_id')->references('id')->on('categories');
 
         });
     }

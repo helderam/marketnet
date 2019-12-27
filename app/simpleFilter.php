@@ -200,12 +200,10 @@ function simpleParameters($default_column, $order = 'desc')
     $programs = session('programs', []);
     $icons = session('icons', []);
     $program = substr($controller, 1, 100);
+    #var_dump($programs); var_dump(session()->all()); dd($program);
     if (!isset($programs[$program])) {
-      #var_dump($program);  dd($programs);
-      #return Redirect::to('/home');
-      #header('Location: /home');
-      echo "SEM PERMISSÂO";
-      dd('SEM PERMISSÂO'); // DESATIVAR AQUI PARA PERMITIR ACESSAR TODOS PROGRAMAS
+      abort(redirect('/home'));
+      #dd('SEM PERMISSÂO'); // DESATIVAR AQUI PARA PERMITIR ACESSAR TODOS PROGRAMAS
     }
     // Limpeza sessão
     session(['filters' => array()]);
