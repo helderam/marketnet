@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Category;
+use App\ProductCategory;
+use App\Product;
 
 class CategoryController extends Controller
 {
@@ -110,6 +112,43 @@ class CategoryController extends Controller
         return redirect()
             ->route('categories.index')
             ->with('success', "Categoria $category->name selecionada");
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function select($id)
+    {
+        // Obtem Category
+        $category = Category::Find($id);
+        // Obtem todos registros já associados ao grupo
+        $registros = ProductCategory::where('category_id', $category->id)->get();
+        // Cria array com os produtos ja associados
+        $productCategorys = [];
+        foreach ($registros as $registro) {
+            $productCategorys[$registro->product_id] = $registro;
+        }
+        // Busca todos produtos e insere na tabela de associação os que estão faltando
+        $products = Product::all();
+        foreach ($products as $product) {
+            if (empty($productCategorys[$product->id])) {
+                $productCategory = new ProductCategory();
+                $productCategory->product_id = $product->id;
+                $productCategory->category_id = $id;
+                $productCategory->active = 'N';
+                $productCategory->save();
+            }
+        }
+          // Redireciona para controlador de produtos por grupo
+          return redirect()
+          ->route('product-categories.index')
+          ->with('route_back', route('groups.index')) # botão de retorno para grupos
+          ->with('id', $category->id)
+          ->with('name', $category->name)
+          ->with('success', "Grupo $category->name selecionado");
     }
     /**
      * Show the form for editing the specified resource.

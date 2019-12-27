@@ -25,7 +25,7 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{session('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
         </div>
@@ -70,6 +70,11 @@
                 <td>
                   <?php echo simpleAction('EDITAR', 'categories.edit', 'info', 'fa-edit', $category->id); ?>
                   <?php echo simpleAction('SUBCATEGORIAS', 'categories.show', 'info', 'fa-map', $category->id); ?>
+                  <?php
+                  if ($category->level >= 3){
+                    echo simpleAction('ASSOCIAR PRODUTOS', 'categories.select', 'info', 'fa-stream', $category->id); 
+                  }
+                  ?>
                 </td>
               </tr>
               @endforeach

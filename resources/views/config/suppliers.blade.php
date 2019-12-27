@@ -25,7 +25,7 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{session('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
 

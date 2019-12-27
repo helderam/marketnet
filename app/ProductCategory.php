@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ProductCategory extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'slug', 'body', 'sku', 'supplier_id'
+        'product_id', 'category_id', 'active'
     ];
 
     /**
@@ -25,14 +25,6 @@ class Product extends Model
     ];
 
     public static $rules = [
-        'name' => "required|max:50",
-        'description' => "required|max:5000",
-        'slug' => "required|max:50",
-        'sku' => "required|max:20",
     ];
 
-    public function supplier()
-    {
-        return $this->belongsTo('App\Supplier');
-    }
 }

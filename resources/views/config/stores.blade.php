@@ -25,7 +25,7 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{session('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
         </div>
@@ -66,6 +66,7 @@
                 <td>
                   <?php echo simpleAction('EDITAR', 'stores.edit', 'info', 'fa-edit', $store->id); ?>
                   <?php echo simpleAction('CEPs', 'stores.show', 'info', 'fa-map', $store->id); ?>
+                  <?php echo simpleAction('ESTOQUE', 'stores.select', 'info', 'fa-dumpster', $store->id); ?>
                 </td>
               </tr>
               @endforeach

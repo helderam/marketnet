@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Grupo de Programas')
+@section('title', 'Estoques')
 
 @section('content')
 
@@ -9,12 +9,9 @@
 
 
 <!-- LINHA TITULO, PESQUISA/BUSCA E NOVO REGISTRO -->
-<form action="/group-programs" method="get">
+<form action="/stocks" method="get">
 
-  <?php 
-  $group = session('group');
-  echo simpleHeadTable(); 
-  ?>
+  <?php echo simpleHeadTable(route('stocks.create')); ?>
 
   <!-- CAMPOS PARA FILTRAGEM -->
   <div class="collapse" id="filtros">
@@ -28,21 +25,28 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{ simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
-          <!-- FILTRO POR EMAIL -->
-          <div class="form-group row">
-            <label for="email" class="col-sm-3 col-form-label">E-Mail</label>
-            <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="email" name="email" value="{{simpleFilter('email')}}" placeholder="E-Mail">
-            </div>
-          </div>
+
         </div>
 
-        <!-- BOTÂO APLICAR FILTRAR -->
+       <!-- FILTRO - SEGUNDA COLUNA -->
+        <div class="col">
+
+          <!-- FILTRO POR SKU -->
+          <div class="form-group row">
+            <label for="sku" class="col-sm-3 col-form-label">SKU</label>
+            <div class="col-sm-9">
+              <input class="form-control form-control-sm" id="sku" name="sku" value="{{simpleFilter('sku')}}" placeholder="Rota">
+            </div>
+          </div>
+
+        </div>
+
       </div>
-      <?php echo simpleApplyFilters() ?>
+        <!-- BOTÂO APLICAR FILTRAR -->
+        <?php echo simpleApplyFilters() ?>
 
     </div>
   </div>
@@ -60,34 +64,25 @@
             <thead>
               <tr>
                 <th> <?php echo simpleColumn('id', 'ID') ?></th>
-                <th> <?php echo simpleColumn('program_name',  'USUÀRIO') ?></th>
-                <th> <?php echo simpleColumn('route',  'ROTA') ?></th>
-                <th> <?php echo simpleColumn('updated_at', 'ASSOCIAÇÂO') ?></th>
-                <th> <?php echo simpleColumn('active',     'ATIVO') ?></th>
+                <th> <?php echo simpleColumn('product_sku', 'SKU') ?></th>
+                <th> <?php echo simpleColumn('product_name', 'NOME') ?></th>
+                <th> <?php echo simpleColumn('stock', 'ESTOQUE') ?></th>
+                <th> <?php echo simpleColumn('created_at', 'CRIAÇÂO') ?></th>
                 <th> AÇÔES </th>
               </tr>
             </thead>
 
             <tbody>
-              @foreach($groupPrograms as $group)
+              @foreach($stocks as $stock)
               <tr>
-                <?php #var_dump($group); exit;?>
-                <td>{{$group->id}}</td>
-                <td>{{$group->program_name}}</td>
-                <td>{{$group->route}}</td>
-                <td>{{$group->active == 'S' ? simpleDateFormat($group->updated_at) : ''}}</td>
-                <td>{{$group->active == 'S' ? $group->active : 'N'}}</td>
+                <td>{{$stock->id}}</td>
+                <td>{{$stock->product_sku}}</td>
+                <td>{{$stock->product_name}}</td>
+                <td>{{$stock->stock}}</td>
+                <td>{{simpleDateFormat($stock->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>
-                  <?php
-                  echo simpleAction(
-                    $group->active == 'S' ? 'Retirar' : 'Incluir',
-                    'group-programs.show',
-                    $group->active == 'S' ? 'danger' : 'success',
-                    'fa-edit',
-                    $group->id
-                  );
-                  ?>
+                  <?php echo simpleAction('EDITAR', 'stocks.edit', 'info', 'fa-edit', $stock->id); ?>
                 </td>
               </tr>
               @endforeach
@@ -102,7 +97,7 @@
           </table>
 
           <!-- RODAPE NAVEGADOR DE PAGINAS -->
-          <?php echo simpleFootTable($groupPrograms) ?>
+          <?php echo simpleFootTable($stocks) ?>
           <!-- FIM - RODAPE -->
 
         </div>

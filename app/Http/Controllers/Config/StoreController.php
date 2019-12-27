@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Store;
-
+use App\Stock;
+use App\Product;
 
 class StoreController extends Controller
 {
@@ -86,6 +87,45 @@ class StoreController extends Controller
             ->with('name', $store->name)
             ->with('success', "Loja $store->name selecionada");
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function select($id)
+    {
+        // Obtem Loja
+        $store = Store::Find($id);
+        // Obtem todos registros já associados ao loja/estoque
+        $registros = Stock::where('store_id', $store->id)->get();
+        // Cria array com os produtos ja associados
+        $stocks = [];
+        foreach ($registros as $registro) {
+            $stocks[$registro->product_id] = $registro;
+        }
+        // Busca todos produtos e insere na tabela de associação os que estão faltando
+        $products = Product::all();
+        foreach ($products as $product) {
+            if (empty($stocks[$product->id])) {
+                $stock = new Stock();
+                $stock->product_id = $product->id;
+                $stock->store_id = $id;
+                $stock->active = 'N';
+                $stock->stock = 0;
+                $stock->save();
+            }
+        }
+        // Redireciona para controlador de produtos por grupo
+        return redirect()
+            ->route('stocks.index')
+            ->with('route_back', route('stores.index')) # botão de retorno para lojas
+            ->with('id', $store->id)
+            ->with('name', $store->name)
+            ->with('success', "Grupo $store->name selecionado");
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

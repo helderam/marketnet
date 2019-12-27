@@ -283,7 +283,7 @@ function simpleHeadTable($route_create_new = null)
       }
     }
   }
-  $filters = empty($filters) ? '' : 'Filtros: ' . substr($filters, 0, strlen($filters) - 2);
+  $filters = empty($filters) ? '' : substr($filters, 0, strlen($filters) - 2);
 
   // Include button create new ?
   $include_create_new = $route_create_new ?

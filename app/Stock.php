@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Supplier extends Model
+class Stock extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Supplier extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'code'
+        'product_id', 'store_id', 'active', 'stock'
     ];
 
     /**
@@ -24,13 +24,5 @@ class Supplier extends Model
         'created_at' => 'datetime',
     ];
 
-    public static $rules = [
-        'name' => "required|max:50",
-        'code' => "required|max:14",
-    ];
-
-    public function products()
-    {
-        return $this->hasMany('App\Product');
-    }
+    public static $rules = [];
 }

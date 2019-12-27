@@ -25,7 +25,7 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{session('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
 
@@ -33,7 +33,7 @@
           <div class="form-group row">
             <label for="route" class="col-sm-3 col-form-label">E-Mail</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="route" name="route" value="{{session('route')}}" placeholder="Rota">
+              <input class="form-control form-control-sm" id="route" name="route" value="{{simpleFilter('route')}}" placeholder="Rota">
             </div>
           </div>
 
@@ -75,7 +75,7 @@
                 <td>{{$product->sku}}</td>
                 <td>{{$product->name}}</td>
                 <td>{{$product->slug}}</td>
-                <td>{{$product->supplier_id}}</td>
+                <td>{{$product->supplier->name}}</td>
                 <td>{{simpleDateFormat($product->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>

@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resources([
         'stores' => 'Config\StoreController',
     ]);
+    Route::get('/stores/select/{id}', 'Config\StoreController@select')->name('stores.select');
 
     // Lojas
     Route::resources([
@@ -72,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resources([
         'categories' => 'Config\CategoryController',
     ]);
+    Route::get('/categories/select/{id}', 'Config\CategoryController@select')->name('categories.select');
 
     // Fornecedores
     Route::resources([
@@ -81,5 +83,15 @@ Route::group(['middleware' => 'auth'], function () {
     // Produtos
     Route::resources([
         'products' => 'Config\ProductController',
+    ]);
+
+    // Produtos Categorias
+    Route::resources([
+        'product-categories' => 'Config\ProductCategoryController',
+    ]);
+
+    // Estoques
+    Route::resources([
+        'stocks' => 'Config\StockController',
     ]);
 });
