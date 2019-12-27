@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
         'stores' => 'Config\StoreController',
     ]);
     Route::get('/stores/select/{id}', 'Config\StoreController@select')->name('stores.select');
+    Route::get('/stores/prices/{id}', 'Config\StoreController@prices')->name('stores.prices');
 
     // Lojas
     Route::resources([
@@ -97,4 +98,8 @@ Route::group(['middleware' => 'auth'], function () {
     ]);
     Route::get('/stocks/active/{id}', 'Config\StockController@active')->name('stocks.active');
 
+    // Preços
+    Route::resources([
+        'prices' => 'Config\PriceController',
+    ]);
 });

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Store;
 use App\Stock;
 use App\Product;
+use App\Price;
 
 class StoreController extends Controller
 {
@@ -127,6 +128,46 @@ class StoreController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function prices($id)
+    {
+        // Obtem Loja
+        $store = Store::Find($id);
+        // Obtem todos registros já associados ao loja/estoque
+        $registros = Price::where('store_id', $store->id)->get();
+        // Cria array com os produtos ja associados
+        $prices = [];
+        foreach ($registros as $registro) {
+            $prices[$registro->product_id] = $registro;
+        }
+        // Busca todos produtos e insere na tabela de associação os que estão faltando
+        $products = Product::all();
+        foreach ($products as $product) {
+            if (empty($prices[$product->id])) {
+                $price = new Price();
+                $price->product_id = $product->id;
+                $price->store_id = $id;
+                $price->active = 'N';
+                $price->price = 0;
+                $price->quantity_packing = 0;
+                $price->packing ='';
+                $price->save();
+            }
+        }
+        // Redireciona para controlador de produtos por grupo
+        return redirect()
+            ->route('prices.index')
+            ->with('route_back', route('stores.index')) # botão de retorno para lojas
+            ->with('id', $store->id)
+            ->with('name', $store->name)
+            ->with('success', "Grupo $store->name selecionado");
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -178,5 +219,4 @@ class StoreController extends Controller
     {
         //
     }
-
 }

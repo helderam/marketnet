@@ -93,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
             // Menu comum a todos usuários 
             $event->menu->add(
                 [
-                    'text' => 'PERFIL', 'icon' => 'fas fa-fw fa-cog',
+                    'text' => 'PERFIL', 'icon' => 'fas fa-fw fa-user',
                     'submenu' => [
                         ['text' => 'Perfil', 'url' => '/perfil', 'icon' => 'fas fa-fw fa-user']
                     ]

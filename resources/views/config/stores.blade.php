@@ -67,6 +67,7 @@
                   <?php echo simpleAction('EDITAR', 'stores.edit', 'info', 'fa-edit', $store->id); ?>
                   <?php echo simpleAction('CEPs', 'stores.show', 'info', 'fa-map', $store->id); ?>
                   <?php echo simpleAction('ESTOQUE', 'stores.select', 'info', 'fa-dumpster', $store->id); ?>
+                  <?php echo simpleAction('PREÇOS', 'stores.prices', 'info', 'fa-dumpster', $store->id); ?>
                 </td>
               </tr>
               @endforeach
