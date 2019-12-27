@@ -102,14 +102,11 @@
         </div>
         <div class="col-sm-5">
           <div class="input-group">
-          <select name="supplier_id" class="form-control form-control-sm" id="supplier">
             <?php 
-            echo simpleSelect(
-              old('supplier_id', $product->supplier_id), # ID atual
-              \App\Supplier::orderBy('name')->pluck('id', 'name') # Fornecedores
-              ) 
-              ?>
-          </select>
+            echo simpleSelect('supplier_id', $product->supplier_id, 
+                 \App\Supplier::orderBy('name')->pluck('id', 'name') # Fornecedores
+            );
+            ?>
           </div>
         </div>
       </div>

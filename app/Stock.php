@@ -25,4 +25,10 @@ class Stock extends Model
     ];
 
     public static $rules = [];
+
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
+
 }

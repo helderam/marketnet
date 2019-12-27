@@ -89,9 +89,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resources([
         'product-categories' => 'Config\ProductCategoryController',
     ]);
+    Route::get('/product-categories/active/{id}', 'Config\ProductCategoryController@active')->name('product-categories.active');
 
     // Estoques
     Route::resources([
         'stocks' => 'Config\StockController',
     ]);
+    Route::get('/stocks/active/{id}', 'Config\StockController@active')->name('stocks.active');
+
 });

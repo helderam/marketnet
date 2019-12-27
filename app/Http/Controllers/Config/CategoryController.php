@@ -115,7 +115,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Go to Products to selected category
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -145,7 +145,7 @@ class CategoryController extends Controller
           // Redireciona para controlador de produtos por grupo
           return redirect()
           ->route('product-categories.index')
-          ->with('route_back', route('groups.index')) # botão de retorno para grupos
+          ->with('route_back', route('categories.index')) # botão de retorno para grupos
           ->with('id', $category->id)
           ->with('name', $category->name)
           ->with('success', "Grupo $category->name selecionado");

@@ -23,11 +23,12 @@ function simpleFormHead($id)
   $status = $id ? 'ID: ' . $id : 'Novo';
   $program = session('program');
   $icon = session('icon');
-  $selected_name = session('selected_name');
+  $selected_name = session('selected_name') ? "- ".session('selected_name') : '';
+
   $html = "
     <div class='row'>
       <div class='col-9'>
-        <h4> <i class='fa fa-$icon'></i> &nbsp; $program $selected_name</h4>
+        <h4> <i class='fa fa-$icon'></i> &nbsp; $program <b>$selected_name</b> </h4>
       </div>
       <div class='col-3 float-left d-flex justify-content-end'>
         <p>$status</p>
@@ -184,6 +185,7 @@ function simpleSubmenu($grupo_program, $icon, $rota)
   $icon = $icon ?? 'cog';
   return ['text' => $grupo_program, 'icon' => 'fas fa-fw fa-' . $icon, 'url' => $rota, 'active' => [$rota, $rota . '/*', "regex:@^$rota\?*@"]];
 }
+
 /**
  * Store seseeion and return number os records, ordered column and direction
  *
@@ -270,7 +272,7 @@ function simpleHeadTable($route_create_new = null)
 {
   $icon = session('icon');
   $program = session('program');
-  $selected_name = session('selected_name');
+  $selected_name = session('selected_name') ? "- ".session('selected_name') : '';
 
   // Pega os filtro atuais
   $filters = '';
@@ -278,7 +280,7 @@ function simpleHeadTable($route_create_new = null)
   if ($descriptions) {
     #var_dump($descriptions);    exit;
     foreach ($descriptions as $description => $value) {
-      if ($value) {
+      if ($description && $value) {
         $filters .= $description . ': ' . $value . ', ';
       }
     }
@@ -306,7 +308,7 @@ function simpleHeadTable($route_create_new = null)
     <div class='row'>
 
     <div class='col-5'>
-      <h4> <i class='fa fa-$icon'></i> $program $selected_name</h4>
+      <h4> <i class='fa fa-$icon'></i> $program <b> $selected_name </b></h4>
     </div>
     
     <div class='col-4'>
@@ -337,16 +339,17 @@ function simpleHeadTable($route_create_new = null)
  * 
  * @return mixed
  */
-function simpleSelect($selected_id, $records)
+function simpleSelect($field, $selected_id, $records)
 {
-  $selects = "";
+  $selects = "<select name='$field' class='form-control form-control-sm' id='supplier'> \n";
   #dd($records);
+  $selected_id = old($field, $selected_id); # ID atual
   foreach ($records as $option => $id) {
     $selected = $selected_id == $id ? 'selected' : '';
-    $selects .= "<option value='$id' $selected> $option </option>";
+    $selects .= "<option value='$id' $selected> $option </option> \n";
   }
   #dd($selects);
-  return $selects;
+  return $selects."</select> \n";
 }
 
 /**
