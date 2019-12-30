@@ -10,6 +10,8 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use App\StoreUser;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -33,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
 
             $id = Auth::id();
+            // Obtem as lojas permitidas
+            $store_ids = StoreUser::where('user_id', $id)->where('active', 'S')->pluck('store_id')->toArray();
+            #dd($store_ids);
+            session(['store_ids' => $store_ids]);
+
             // Obtem menus permitidos e grupos
             $menus = DB::select(" 
                 select g.id, g.name grupo, u.name, p.name programa, gu.user_id, gp.program_id, 
@@ -76,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
             $submenus = [];
             asort($program_groups);
             foreach ($program_groups as $programa => $grupo) {
-                if (empty($anterior)) 
+                if (empty($anterior))
                     $anterior = $grupo;
                 if ($grupo != $anterior) {
                     $event->menu->add(simpleMenu($anterior, $group_icons[$grupo], $submenus));

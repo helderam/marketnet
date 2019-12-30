@@ -21,7 +21,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->text('body')->nullable();
-            $table->string('slug')->nullable();
+            $table->string('slug')->unique();
 
             $table->unsignedBigInteger('category_id');
             #$table->foreign('category_id')->references('id')->on('categories');

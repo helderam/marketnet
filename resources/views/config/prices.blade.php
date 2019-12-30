@@ -11,7 +11,7 @@
 <!-- LINHA TITULO, PESQUISA/BUSCA E NOVO REGISTRO -->
 <form action="/prices" method="get">
 
-  <?php echo simpleHeadTable(); ?>
+  <?php echo simpleHeadTable(route('prices.create')); ?>
 
   <!-- CAMPOS PARA FILTRAGEM -->
   <div class="collapse" id="filtros">
@@ -49,18 +49,24 @@
       <div class="row">
 
         <!-- FILTRO - PRIMEIRA COLUNA -->
+
         <div class="col">
-          <!-- FILTRO POR ATIVO -->
+        </div>
+
+        <div class="col">
+          <!-- LOJA -->
           <div class="form-group row">
-            <label for="active" class="col-sm-3 col-form-label">Ativo</label>
-            <div class="col-sm-2">
-            <?php echo simpleSelect('active', simpleFilter('active'), ['Sim'=>'S','Não'=>'N'] ) ?>
+            <label for="store_id" class="col-sm-3 col-form-label">Loja</label>
+            <div class="col-sm-4">
+            <?php
+                 echo simpleSelect('store_id', simpleFilter('store_id'),
+                 \App\Store::orderBy('name')->whereIn('id', session('store_ids'))->pluck('id', 'name') # So lojas autorizadas
+                 );
+            ?>
             </div>
           </div>
-
-        </div>
-        <div class="col">
         </div>      
+
       </div>
       
         <!-- BOTÂO APLICAR FILTRAR -->
@@ -87,6 +93,7 @@
                 <th> <?php echo simpleColumn('quantity_packing', 'QTD EMBAL') ?></th>
                 <th> <?php echo simpleColumn('packing', 'EMBALAGEM') ?></th>
                 <th> <?php echo simpleColumn('price', 'PREÇO') ?></th>
+                <th> <?php echo simpleColumn('store_name', 'LOJA') ?></th>
                 <th> <?php echo simpleColumn('created_at', 'CRIAÇÂO') ?></th>
                 <th> AÇÔES </th>
               </tr>
@@ -101,6 +108,7 @@
                 <td>{{$price->quantity_packing}}</td>
                 <td>{{$price->packing}}</td>
                 <td>{{$price->price}}</td>
+                <td>{{$price->store_name}}</td>
                 <td>{{simpleDateFormat($price->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>

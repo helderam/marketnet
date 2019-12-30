@@ -341,7 +341,7 @@ function simpleHeadTable($route_create_new = null)
  */
 function simpleSelect($field, $selected_id, $records)
 {
-  $selects = "<select name='$field' class='form-control form-control-sm' id='supplier'> \n";
+  $selects = "<select name='$field' class='form-control form-control-sm' id='supplier'> <option value=''> </option> \n";
   #dd($records);
   $selected_id = old($field, $selected_id); # ID atual
   foreach ($records as $option => $id) {

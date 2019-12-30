@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Grupos')
+@section('title', 'Usuários Autorizados')
 
 @section('content')
 
@@ -9,9 +9,9 @@
 
 
 <!-- LINHA TITULO, PESQUISA/BUSCA E NOVO REGISTRO -->
-<form action="/stores" method="get">
+<form action="/product-categories" method="get">
 
-  <?php echo simpleHeadTable(route('stores.create')); ?>
+  <?php echo simpleHeadTable(); ?>
 
   <!-- CAMPOS PARA FILTRAGEM -->
   <div class="collapse" id="filtros">
@@ -25,9 +25,23 @@
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Nome</label>
             <div class="col-sm-9">
-              <input class="form-control form-control-sm" id="name" name="name" value="{{simpleFilter('name')}}" placeholder="Nome">
+              <input class="form-control form-control-sm" id="name" name="name" value="{{ simpleFilter('name')}}" placeholder="Nome">
             </div>
           </div>
+
+        </div>
+
+       <!-- FILTRO - SEGUNDA COLUNA -->
+        <div class="col">
+
+          <!-- FILTRO POR SKU -->
+          <div class="form-group row">
+            <label for="sku" class="col-sm-3 col-form-label">SKU</label>
+            <div class="col-sm-4">
+              <input class="form-control form-control-sm" id="sku" name="sku" value="{{simpleFilter('sku')}}" placeholder="SKU">
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -50,25 +64,31 @@
             <thead>
               <tr>
                 <th> <?php echo simpleColumn('id', 'ID') ?></th>
-                <th> <?php echo simpleColumn('name', 'NOME') ?></th>
+                <th> <?php echo simpleColumn('user_name', 'NOME') ?></th>
+                <th> <?php echo simpleColumn('active', 'ATIVO') ?></th>
                 <th> <?php echo simpleColumn('created_at', 'CRIAÇÂO') ?></th>
                 <th> AÇÔES </th>
               </tr>
             </thead>
 
             <tbody>
-              @foreach($stores as $store)
+              @foreach($storeUsers as $storeUser)
               <tr>
-                <td>{{$store->id}}</td>
-                <td>{{$store->name}}</td>
-                <td>{{simpleDateFormat($store->created_at)}}</td>
+                <td>{{$storeUser->id}}</td>
+                <td>{{$storeUser->user_name}}</td>
+                <td>{{$storeUser->active}}</td>
+                <td>{{simpleDateFormat($storeUser->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>
-                  <?php echo simpleAction('EDITAR', 'stores.edit', 'info', 'fa-edit', $store->id); ?>
-                  <?php echo simpleAction('CEPs', 'stores.show', 'info', 'fa-map', $store->id); ?>
-                  <?php #echo simpleAction('ESTOQUE', 'stores.select', 'info', 'fa-dumpster', $store->id); ?>
-                  <?php #echo simpleAction('PREÇOS', 'stores.prices', 'info', 'fa-dollar', $store->id); ?>
-                  <?php echo simpleAction('USUÀRIOS', 'stores.users', 'info', 'fa-users', $store->id); ?>
+                  <?php
+                  echo simpleAction(
+                    $storeUser->active == 'S' ? 'Desativar' : 'Ativar',
+                    'store-users.active',
+                    $storeUser->active == 'S' ? 'danger' : 'success',
+                    $storeUser->active == 'S' ? 'fa-lock-open' : 'fa-lock',
+                    $storeUser->id
+                  );
+                  ?>
                 </td>
               </tr>
               @endforeach
@@ -83,7 +103,7 @@
           </table>
 
           <!-- RODAPE NAVEGADOR DE PAGINAS -->
-          <?php echo simpleFootTable($stores) ?>
+          <?php echo simpleFootTable($storeUsers) ?>
           <!-- FIM - RODAPE -->
 
         </div>

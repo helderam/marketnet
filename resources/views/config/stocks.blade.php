@@ -57,10 +57,22 @@
             <?php echo simpleSelect('active', simpleFilter('active'), ['Sim'=>'S','Não'=>'N'] ) ?>
             </div>
           </div>
-
         </div>
+
         <div class="col">
+          <!-- LOJA -->
+          <div class="form-group row">
+            <label for="store_id" class="col-sm-3 col-form-label">SKU</label>
+            <div class="col-sm-4">
+            <?php
+                 echo simpleSelect('store_id', simpleFilter('store_id'),
+                 \App\Store::orderBy('name')->whereIn('id', session('store_ids'))->pluck('id', 'name') # So lojas autorizadas
+                 );
+            ?>
+            </div>
+          </div>
         </div>      
+
       </div>
       
         <!-- BOTÂO APLICAR FILTRAR -->
@@ -86,6 +98,7 @@
                 <th> <?php echo simpleColumn('product_name', 'NOME') ?></th>
                 <th> <?php echo simpleColumn('stock', 'ESTOQUE') ?></th>
                 <th> <?php echo simpleColumn('active', 'ATIVO') ?></th>
+                <th> <?php echo simpleColumn('store_name', 'LOJA') ?></th>
                 <th> <?php echo simpleColumn('created_at', 'CRIAÇÂO') ?></th>
                 <th> AÇÔES </th>
               </tr>
@@ -99,6 +112,7 @@
                 <td>{{$stock->product_name}}</td>
                 <td>{{$stock->stock}}</td>
                 <td>{{$stock->active}}</td>
+                <td>{{$stock->store_name}}</td>
                 <td>{{simpleDateFormat($stock->created_at)}}</td>
                 <!-- BOTÕES DE AÇÃO -->
                 <td>

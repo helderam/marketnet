@@ -40,7 +40,7 @@
       <div class="form-group row">
         {!! Form::label('price', 'Preço:', ['class' => 'col-sm-3 col-form-label']) !!}
         <div class="col-sm-9">
-          {!! Form::text('price', old('price', $price->price), ['placeholder' => 'Quantidade Estoque', 'class' => 'form-control form-control-sm']) !!}
+          {!! Form::text('price', old('price', $price->price), ['placeholder' => 'Preço', 'class' => 'form-control form-control-sm']) !!}
         </div>
       </div>
 

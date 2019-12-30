@@ -10,6 +10,9 @@ use App\Store;
 use App\Stock;
 use App\Product;
 use App\Price;
+use App\User;
+use App\StoreUser;
+
 
 class StoreController extends Controller
 {
@@ -22,10 +25,19 @@ class StoreController extends Controller
         // Campos de filtragem
         $name = simpleFilter('name', 'Nome');
 
+        // Lojas autorizadas
+        $store_ids = session('store_ids');
+        if (empty($store_ids)) return redirect()->route('home');
+        #dd($store_ids);
+        
         // Seleciona os registros, filtra e ordena
+        #DB::enableQueryLog();
         $registros = Store::orderBy($column, $order);
+        $registros->whereIn('id', $store_ids); # Somente lojas autorizadas
+        #dd($registros->toSql());
         if ($name) $registros->whereRaw('lower(name) like ?', strtolower("%{$name}%")); # Desconsidera case
         $stores = $registros->paginate($records);
+        #dd(DB::getQueryLog());
 
         // Retorna para a view
         return view('config.stores', compact('stores'));
@@ -89,84 +101,43 @@ class StoreController extends Controller
             ->with('success', "Loja $store->name selecionada");
     }
 
+
     /**
-     * Display the specified resource.
+     * Display Users by Store
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function select($id)
+    public function users($id)
     {
         // Obtem Loja
         $store = Store::Find($id);
         // Obtem todos registros já associados ao loja/estoque
-        $registros = Stock::where('store_id', $store->id)->get();
+        $registros = StoreUser::where('store_id', $store->id)->get();
         // Cria array com os produtos ja associados
-        $stocks = [];
+        $storeUsers = [];
         foreach ($registros as $registro) {
-            $stocks[$registro->product_id] = $registro;
+            $storeUsers[$registro->user_id] = true;
         }
         // Busca todos produtos e insere na tabela de associação os que estão faltando
-        $products = Product::all();
-        foreach ($products as $product) {
-            if (empty($stocks[$product->id])) {
-                $stock = new Stock();
-                $stock->product_id = $product->id;
-                $stock->store_id = $id;
-                $stock->active = 'N';
-                $stock->stock = 0;
-                $stock->save();
+        $users = User::all();
+        foreach ($users as $user) {
+            if (empty($storeUsers[$user->id])) {
+                $storeUser = new StoreUser();
+                $storeUser->user_id = $user->id;
+                $storeUser->store_id = $id;
+                $storeUser->active = 'N';
+                $storeUser->save();
             }
         }
         // Redireciona para controlador de produtos por grupo
         return redirect()
-            ->route('stocks.index')
+            ->route('store-users.index')
             ->with('route_back', route('stores.index')) # botão de retorno para lojas
             ->with('id', $store->id)
             ->with('name', $store->name)
             ->with('success', "Grupo $store->name selecionado");
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function prices($id)
-    {
-        // Obtem Loja
-        $store = Store::Find($id);
-        // Obtem todos registros já associados ao loja/estoque
-        $registros = Price::where('store_id', $store->id)->get();
-        // Cria array com os produtos ja associados
-        $prices = [];
-        foreach ($registros as $registro) {
-            $prices[$registro->product_id] = $registro;
-        }
-        // Busca todos produtos e insere na tabela de associação os que estão faltando
-        $products = Product::all();
-        foreach ($products as $product) {
-            if (empty($prices[$product->id])) {
-                $price = new Price();
-                $price->product_id = $product->id;
-                $price->store_id = $id;
-                $price->active = 'N';
-                $price->price = 0;
-                $price->quantity_packing = 0;
-                $price->packing ='';
-                $price->save();
-            }
-        }
-        // Redireciona para controlador de produtos por grupo
-        return redirect()
-            ->route('prices.index')
-            ->with('route_back', route('stores.index')) # botão de retorno para lojas
-            ->with('id', $store->id)
-            ->with('name', $store->name)
-            ->with('success', "Grupo $store->name selecionado");
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -209,14 +180,85 @@ class StoreController extends Controller
             ->with('error', 'Falha ao alterar');
     }
 
-    /**
-     * Remove the specified resource from storage.
+
+    /** 
+     * DESATIVADO 
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function prices($id)
     {
-        //
+        // Obtem Loja
+        $store = Store::Find($id);
+        // Obtem todos registros já associados ao loja/estoque
+        $registros = Price::where('store_id', $store->id)->get();
+        // Cria array com os produtos ja associados
+        $prices = [];
+        foreach ($registros as $registro) {
+            $prices[$registro->product_id] = $registro;
+        }
+        // Busca todos produtos e insere na tabela de associação os que estão faltando
+        $products = Product::all();
+        foreach ($products as $product) {
+            if (empty($prices[$product->id])) {
+                $price = new Price();
+                $price->product_id = $product->id;
+                $price->store_id = $id;
+                $price->active = 'N';
+                $price->price = 0;
+                $price->quantity_packing = 0;
+                $price->packing ='';
+                $price->save();
+            }
+        }
+        // Redireciona para controlador de produtos por grupo
+        return redirect()
+            ->route('prices.index')
+            ->with('route_back', route('stores.index')) # botão de retorno para lojas
+            ->with('id', $store->id)
+            ->with('name', $store->name)
+            ->with('success', "Grupo $store->name selecionado");
     }
+    */
+
+    /**
+     * DESATIVADO... TRANSFERIDO PARA CONNSTRUCT DO StockController
+     * Inclui novos registros na tabela estoque
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    public function select($id)
+    {
+        // Obtem Loja
+        $store = Store::Find($id);
+        // Obtem todos registros já associados ao loja/estoque
+        $registros = Stock::where('store_id', $store->id)->get();
+        // Cria array com os produtos ja associados
+        $stocks = [];
+        foreach ($registros as $registro) {
+            $stocks[$registro->product_id] = $registro;
+        }
+        // Busca todos produtos e insere na tabela de associação os que estão faltando
+        $products = Product::all();
+        foreach ($products as $product) {
+            if (empty($stocks[$product->id])) {
+                $stock = new Stock();
+                $stock->product_id = $product->id;
+                $stock->store_id = $id;
+                $stock->active = 'N';
+                $stock->stock = 0;
+                $stock->save();
+            }
+        }
+        // Redireciona para controlador de produtos por grupo
+        return redirect()
+            ->route('stocks.index')
+            ->with('route_back', route('stores.index')) # botão de retorno para lojas
+            ->with('id', $store->id)
+            ->with('name', $store->name)
+            ->with('success', "Grupo $store->name selecionado");
+    }
+    */
+
 }
