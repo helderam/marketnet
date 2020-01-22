@@ -11,18 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontController@index')->name('home');
+Route::get('/product/{slug}', 'FrontController@single')->name('product.single');
+Route::get('/cart', 'FrontController@index')->name('cart.index');
 
 Route::get('/licence_validate/{id}', 'Admin\LicenceController@licence_validate')->name('licences.validate');
 
 Auth::routes();
 
+/*
 Route::get('/home', function () {
     return view('home');
 })->name('home')->middleware('auth');
-
+*/
 
 Route::group(['middleware' => 'auth'], function () {
     // Cadastro de Usuários

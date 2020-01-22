@@ -36,4 +36,9 @@ class Product extends Model
         return $this->belongsTo('App\Supplier');
     }
 
+    public function photos()
+    {
+        return $this->hasMany('App\Photo');
+    }
+
 }
